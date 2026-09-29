@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Fornecedor {
+  id        Int        @id @default(autoincrement())
+  nome      String
+  cnpj      String?    @unique
+  pastilhas Pastilha[]
+}
+
+model Pastilha {
+  id            Int            @id @default(autoincrement())
+  codigo        String         @unique
+  descricao     String
+  estoqueAtual  Int            @default(0)
+  estoqueMinimo Int
+  fornecedorId  Int
+  fornecedor    Fornecedor     @relation(fields: [fornecedorId], references: [id])
+  movimentacoes Movimentacao[]
+}
+
+model Movimentacao {
+  id          Int      @id @default(autoincrement())
+  tipo        String
+  quantidade  Int
+  data        DateTime @default(now())
+  pastilhaId  Int
+  pastilha    Pastilha @relation(fields: [pastilhaId], references: [id])
+}
