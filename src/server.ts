@@ -16,18 +16,26 @@ app.use(express.json());
 app.post('/fornecedores', async (req: Request, res: Response) => {
   try {
     const { nome, cnpj } = req.body;
+
     const fornecedor = await prisma.fornecedor.create({
-      data: { nome, cnpj },
+      data: {
+        nome,
+        cnpj,
+      },
     });
+
     res.status(201).json(fornecedor);
   } catch (error) {
-    res.status(400).json({ error: 'Erro ao cadastrar fornecedor. Verifique se o CNPJ já existe.' });
+    res.status(400).json({
+      error: 'Erro ao cadastrar fornecedor. Verifique se o CNPJ já existe.',
+    });
   }
 });
 
 // Listar todos os fornecedores
 app.get('/fornecedores', async (req: Request, res: Response) => {
   const fornecedores = await prisma.fornecedor.findMany();
+
   res.json(fornecedores);
 });
 
@@ -38,8 +46,14 @@ app.get('/fornecedores', async (req: Request, res: Response) => {
 // Cadastrar nova pastilha
 app.post('/pastilhas', async (req: Request, res: Response) => {
   try {
-    const { codigo, descricao, estoqueAtual, estoqueMinimo, fornecedorId } = req.body;
-    
+    const {
+      codigo,
+      descricao,
+      estoqueAtual,
+      estoqueMinimo,
+      fornecedorId,
+    } = req.body;
+
     const pastilha = await prisma.pastilha.create({
       data: {
         codigo,
@@ -49,32 +63,37 @@ app.post('/pastilhas', async (req: Request, res: Response) => {
         fornecedorId,
       },
     });
+
     res.status(201).json(pastilha);
   } catch (error) {
-    res.status(400).json({ error: 'Erro ao cadastrar pastilha. Verifique os dados e se o código já existe.' });
+    res.status(400).json({
+      error:
+        'Erro ao cadastrar pastilha. Verifique os dados e se o código já existe.',
+    });
   }
 });
 
-// Listar pastilhas com verificação automática de alerta (Estoque Crítico)
+// Listar pastilhas com verificação automática de alerta
 app.get('/pastilhas', async (req: Request, res: Response) => {
   const pastilhas = await prisma.pastilha.findMany({
-    include: { fornecedor: true }
+    include: {
+      fornecedor: true,
+    },
   });
-  
-  // Mapeia as pastilhas e adiciona a propriedade dinâmica de alerta
-  const pastilhasComStatus = pastilhas.map(p => ({
+
+  const pastilhasComStatus = pastilhas.map((p) => ({
     ...p,
-    alertaCritico: p.estoqueAtual <= p.estoqueMinimo
+    alertaCritico: p.estoqueAtual <= p.estoqueMinimo,
   }));
 
   res.json(pastilhasComStatus);
 });
 
 // ==========================================
-// ROTAS DE MOVIMENTAÇÃO (Extra)
+// ROTAS DE MOVIMENTAÇÃO
 // ==========================================
 
-// Registrar Entrada ou Saída de Estoque
+// Registrar entrada ou saída de estoque
 app.post('/movimentacao', async (req: Request, res: Response) => {
   try {
     const { pastilhaId, tipo, quantidade } = req.body;
@@ -95,7 +114,9 @@ app.post('/movimentacao', async (req: Request, res: Response) => {
 
     // Busca a pastilha
     const pastilha = await prisma.pastilha.findUnique({
-      where: { id: pastilhaId },
+      where: {
+        id: pastilhaId,
+      },
     });
 
     if (!pastilha) {
@@ -104,23 +125,28 @@ app.post('/movimentacao', async (req: Request, res: Response) => {
       });
     }
 
-    // Verifica se há estoque suficiente para uma saída
+    // Impede estoque negativo
     if (tipo === 'SAIDA' && quantidade > pastilha.estoqueAtual) {
       return res.status(400).json({
         error: `Estoque insuficiente. Estoque atual: ${pastilha.estoqueAtual}.`,
       });
     }
 
-    // Define o impacto da movimentação no estoque
-    const modificador = tipo === 'ENTRADA'
-      ? quantidade
-      : -quantidade;
+    // Define o impacto da movimentação
+    const modificador =
+      tipo === 'ENTRADA'
+        ? quantidade
+        : -quantidade;
 
     // Atualiza o estoque e registra a movimentação
     const pastilhaAtualizada = await prisma.pastilha.update({
-      where: { id: pastilhaId },
+      where: {
+        id: pastilhaId,
+      },
       data: {
-        estoqueAtual: { increment: modificador },
+        estoqueAtual: {
+          increment: modificador,
+        },
         movimentacoes: {
           create: {
             tipo,
@@ -140,6 +166,10 @@ app.post('/movimentacao', async (req: Request, res: Response) => {
   }
 });
 
+// ==========================================
+// HISTÓRICO DE MOVIMENTAÇÕES
+// ==========================================
+
 // Listar histórico de movimentações
 app.get('/movimentacoes', async (req: Request, res: Response) => {
   try {
@@ -154,14 +184,20 @@ app.get('/movimentacoes', async (req: Request, res: Response) => {
 
     res.json(movimentacoes);
   } catch (error) {
-    res.status(500).json({ error: 'Erro ao buscar movimentações.' });
+    res.status(500).json({
+      error: 'Erro ao buscar movimentações.',
+    });
   }
 });
 
 // ==========================================
 // INICIALIZAÇÃO DO SERVIDOR
 // ==========================================
+
 const PORT = process.env.PORT || 3333;
+
 app.listen(PORT, () => {
-  console.log(`[DDA Metalurgica API] Servidor rodando na porta ${PORT}`);
+  console.log(
+    `[DDA Metalúrgica API] Servidor rodando na porta ${PORT}`,
+  );
 });
