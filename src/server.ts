@@ -173,7 +173,72 @@ app.post('/movimentacao', async (req: Request, res: Response) => {
 // Listar histórico de movimentações
 app.get('/movimentacoes', async (req: Request, res: Response) => {
   try {
+    const { tipo, pastilhaId, dataInicio, dataFim } = req.query;
+
+    // Validação do tipo
+    if (tipo && tipo !== 'ENTRADA' && tipo !== 'SAIDA') {
+      return res.status(400).json({
+        error: 'Tipo de movimentação inválido. Use ENTRADA ou SAIDA.',
+      });
+    }
+
+    // Validação do ID da pastilha
+    let pastilhaIdNumber: number | undefined;
+
+    if (pastilhaId) {
+      pastilhaIdNumber = Number(pastilhaId);
+
+      if (!Number.isInteger(pastilhaIdNumber) || pastilhaIdNumber <= 0) {
+        return res.status(400).json({
+          error: 'pastilhaId deve ser um número inteiro maior que zero.',
+        });
+      }
+    }
+
+    // Validação das datas
+    let dataInicioDate: Date | undefined;
+    let dataFimDate: Date | undefined;
+
+    if (dataInicio) {
+      dataInicioDate = new Date(`${dataInicio}T00:00:00`);
+
+      if (isNaN(dataInicioDate.getTime())) {
+        return res.status(400).json({
+          error: 'dataInicio inválida. Use o formato AAAA-MM-DD.',
+        });
+      }
+    }
+
+    if (dataFim) {
+      dataFimDate = new Date(`${dataFim}T23:59:59`);
+
+      if (isNaN(dataFimDate.getTime())) {
+        return res.status(400).json({
+          error: 'dataFim inválida. Use o formato AAAA-MM-DD.',
+        });
+      }
+    }
+
+    // Verifica se o período é válido
+    if (dataInicioDate && dataFimDate && dataInicioDate > dataFimDate) {
+      return res.status(400).json({
+        error: 'dataInicio não pode ser maior que dataFim.',
+      });
+    }
+
     const movimentacoes = await prisma.movimentacao.findMany({
+      where: {
+        ...(tipo ? { tipo: tipo as string } : {}),
+        ...(pastilhaIdNumber ? { pastilhaId: pastilhaIdNumber } : {}),
+        ...(dataInicioDate || dataFimDate
+          ? {
+              data: {
+                ...(dataInicioDate ? { gte: dataInicioDate } : {}),
+                ...(dataFimDate ? { lte: dataFimDate } : {}),
+              },
+            }
+          : {}),
+      },
       include: {
         pastilha: true,
       },
@@ -184,6 +249,8 @@ app.get('/movimentacoes', async (req: Request, res: Response) => {
 
     res.json(movimentacoes);
   } catch (error) {
+    console.error(error);
+
     res.status(500).json({
       error: 'Erro ao buscar movimentações.',
     });
