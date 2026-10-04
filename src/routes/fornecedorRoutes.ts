@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../lib/prisma';
 import express, { Request, Response } from 'express';
 
 
 const router = Router();
-const prisma = new PrismaClient();
+
 
 // Cadastrar novo fornecedor
 router.post('/', async (req, res) => {

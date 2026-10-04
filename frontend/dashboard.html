@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Controle de estoque - Pastilhas DDA</title>
+    <!-- Fontes e Ícones -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- TailwindCSS via CDN (Para desenvolvimento. Em produção, use o processo de build) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            500: '#0d54b4',
+                            600: '#0056c6',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen font-sans antialiased">
+
+    <!-- Cabeçalho -->
+        <header class="bg-white border-b border-slate-200">
+
+        <!-- Linha principal do cabeçalho -->
+        <div class="px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+
+            <!-- Logo e título -->
+            <div class="flex items-center gap-4">
+                <span class="text-brand-500 font-semibold text-xl">
+                    Pastilhas DDA
+                </span>
+
+                <span class="text-slate-800 font-medium text-lg hidden sm:block">
+                    Sistema de Controle de estoque
+                </span>
+            </div>
+
+            <!-- Configurações e perfil -->
+            <div class="flex items-center gap-6">
+
+                <!-- Configurações -->
+                <div class="relative group">
+                    <button
+                        aria-label="Configurações"
+                        aria-haspopup="true"
+                        id="settingsBtn"
+                        class="text-brand-500 text-xl hover:text-brand-600 transition-colors"
+                    >
+                        <i class="fa-solid fa-gear"></i>
+                    </button>
+
+                    <div
+                        id="settingsDropdown"
+                        class="hidden absolute top-8 right-0 bg-white min-w-[200px] shadow-lg border border-slate-200 rounded-md z-50 py-2"
+                    >
+                        <a
+                            href="#"
+                            class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-500"
+                        >
+                            <i class="fa-solid fa-sliders"></i>
+                            Preferências
+                        </a>
+
+                        <a
+                            href="#"
+                            class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-500"
+                        >
+                            <i class="fa-solid fa-lock"></i>
+                            Segurança
+                        </a>
+
+                        <a
+                            href="#"
+                            class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-500"
+                        >
+                            <i class="fa-solid fa-database"></i>
+                            Backup de Dados
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Perfil -->
+                <div class="relative group">
+                    <button
+                        aria-label="Perfil do Usuário"
+                        aria-haspopup="true"
+                        id="profileBtn"
+                        class="w-10 h-10 rounded-full bg-brand-500 text-white font-semibold flex items-center justify-center hover:bg-brand-600 transition-colors"
+                    >
+                        M
+                    </button>
+
+                    <div
+                        id="profileDropdown"
+                        class="hidden absolute top-12 right-0 bg-white min-w-[220px] shadow-lg border border-slate-200 rounded-md z-50 py-2"
+                    >
+                        <div class="px-4 py-3 flex flex-col border-b border-slate-100">
+                            <strong
+                                id="userName"
+                                class="text-sm text-slate-900"
+                            >
+                                Marcos
+                            </strong>
+
+                            <span
+                                id="userRole"
+                                class="text-xs text-slate-500"
+                            >
+                                Administrador
+                            </span>
+                        </div>
+
+                        <a
+                            href="#"
+                            class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-500 mt-1"
+                        >
+                            <i class="fa-solid fa-user"></i>
+                            Meu Perfil
+                        </a>
+
+                        <a
+                            href="#"
+                            class="flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                        >
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            Sair
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Menu de navegação -->
+        <nav class="border-t border-slate-100 px-6 py-3">
+        </nav>
+
+    </header>
+
+    <!-- Navegação Secundária -->
+    <!-- Navegação Principal (Bottom Bar no Mobile, Top Bar no Desktop) -->
+    
+
+    <!-- Área Principal -->
+    <main class="p-6 md:p-10 pb-24 md:pb-10 max-w-7xl mx-auto space-y-8">
+         
+        <!-- Indicadores (KPIs) -->
+        <!-- Indicadores (KPIs) -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
+
+        <!-- 1. Total de pastilhas -->
+            <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
+                <h2 class="text-slate-800 text-sm font-medium mb-3">
+                    📦 Total de Pastilhas
+                </h2>
+                <span class="text-slate-900 text-4xl font-bold" id="laranja">-</span>
+            </div>
+
+            <!-- 2. Unidades em estoque -->
+            <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
+                <h2 class="text-slate-800 text-sm font-medium mb-3">
+                    📊 Unidades em Estoque
+                </h2>
+                <span class="text-slate-900 text-4xl font-bold" id="totalEstoque">-</span>
+            </div>
+
+            <!-- 3. Estoque crítico -->
+            <div class="bg-white rounded-xl p-6 border border-slate-200 border-t-4 border-t-red-500 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
+                <h2 class="text-slate-800 text-sm font-medium mb-3">
+                    🔴 Estoque Crítico
+                </h2>
+                <span class="text-red-600 text-4xl font-bold" id="vermelho">-</span>
+            </div>
+
+            <!-- 4. Movimentações recentes -->
+            <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
+                <h2 class="text-slate-800 text-sm font-medium mb-3">
+                    🔄 Movimentações Recentes
+                </h2>
+                <span class="text-slate-900 text-4xl font-bold" id="amarelo">-</span>
+            </div>
+
+        </section> 
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Coluna Principal (Maior) -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Seção Estoque -->
+                <section class="bg-white rounded-lg p-6 border border-slate-200 shadow-sm">
+                    <h2 class="text-slate-900 text-lg font-medium pb-4 border-b border-slate-200 mb-4">
+                        Estoque de Pastilhas
+                    </h2>
+                    <div id="listaEtq" class="min-h-[200px] flex flex-col gap-3">
+                        <!-- O JS injetará os itens aqui. -->
+                        <p class="text-slate-500 text-sm italic">Carregando dados do estoque...</p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Coluna Lateral (Menor) -->
+            <div class="space-y-8">
+                <!-- Seção Alertas -->
+                <section class="bg-white rounded-lg p-6 border border-slate-200 shadow-sm">
+                    <h2 class="text-slate-900 text-lg font-medium pb-4 border-b border-slate-200 mb-4 flex items-center gap-2">
+                        <span class="text-red-500">⚠</span> Movimentações Recentes
+                    </h2>
+                    <div id="listaAlertas" class="min-h-[100px] flex flex-col gap-3">
+                        <!-- O JS injetará os alertas aqui. -->
+                    </div>
+                </section>
+
+                <!-- Seção Ações Rápidas -->
+                <section class="bg-white rounded-lg p-6 border border-slate-200 shadow-sm">
+                    <h2 class="text-slate-900 text-lg font-medium pb-4 border-b border-slate-200 mb-4">Ações Rápidas</h2>
+                    <div class="flex flex-col gap-3 pt-2">
+                        <button id="btnEntrega" class="w-full flex items-center justify-center gap-2 bg-brand-500 hover:bg-brand-600 text-white font-medium py-3 px-4 rounded-md transition-colors">
+                            <i class="fa-solid fa-plus"></i> Registrar Entrega
+                        </button>
+                        <button class="w-full flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium py-3 px-4 rounded-md transition-colors">
+                            <i class="fa-solid fa-plus"></i> Cadastrar Pastilha
+                        </button>
+                        <button id="btnRelatorio" class="w-full flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium py-3 px-4 rounded-md transition-colors">
+                            Ver Relatórios
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal Overlay -->
+    <div id="modalOverlay" class="fixed inset-0 bg-slate-900/60 hidden place-items-center p-4 md:p-6 z-[100] backdrop-blur-sm">
+        <!-- Modal Card -->
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl border border-slate-200 overflow-hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-6 border-b border-slate-200 bg-slate-50">
+                <h2 id="modalTitle" class="text-xl font-semibold text-slate-900">Título</h2>
+                <button id="closeModal" aria-label="Fechar" class="text-slate-400 hover:text-slate-700 transition-colors text-2xl leading-none">
+                    &times;
+                </button>
+            </div>
+            <!-- Modal Body -->
+            <div id="modalBody" class="p-6 max-h-[70vh] overflow-y-auto">
+                <!-- Conteúdo injetado via JS -->
+            </div>
+        </div>
+    </div> 
+
+    <!-- Scripts -->
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/common.js"></script>
+    <script src="assets/js/dashboard.js"></script>
+
+</body>
+</html>

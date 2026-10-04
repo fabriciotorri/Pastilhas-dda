@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pastilhas DDA</title>
+
+    <!-- Fontes e Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- TailwindCSS via CDN (Para desenvolvimento) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            500: '#0d54b4',
+                            600: '#0056c6',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen font-sans antialiased relative">
+
+    <!-- Cabeçalho (Padronizado) -->
+    <header class="bg-white h-auto md:h-16 px-6 py-4 md:py-0 flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-200 gap-4 md:gap-0">
+        <div class="flex items-center gap-4">
+            <span class="text-brand-500 font-semibold text-xl">Pastilhas DDA</span>
+            <span class="text-slate-800 font-medium text-lg hidden sm:block">Sistema de Controle de Pastilhas</span>
+        </div>
+        
+        <div class="flex items-center justify-between w-full md:w-auto gap-6">
+           
+            
+            <div class="relative group">
+                <button aria-label="Configurações" aria-haspopup="true" id="settingsBtn" class="text-brand-500 text-xl hover:text-brand-600 transition-colors">
+                    <i class="fa-solid fa-gear"></i>
+                </button>
+                <div id="settingsDropdown" class="hidden absolute top-8 left-1/2 -translate-x-1/2 bg-white min-w-[200px] shadow-lg border border-slate-200 rounded-md z-50 py-2">
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-500"><i class="fa-solid fa-sliders"></i> Preferências</a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-500"><i class="fa-solid fa-lock"></i> Segurança</a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-500"><i class="fa-solid fa-database"></i> Backup de Dados</a>
+                </div>
+            </div>
+
+            <div class="relative group">
+                <button aria-label="Perfil do Usuário" aria-haspopup="true" id="profileBtn" class="w-10 h-10 rounded-full bg-brand-500 text-white font-semibold flex items-center justify-center hover:bg-brand-600 transition-colors">
+                    M
+                </button>
+                <div id="profileDropdown" class="hidden absolute top-12 right-0 bg-white min-w-[220px] shadow-lg border border-slate-200 rounded-md z-50 py-2">
+                    <div class="px-4 py-3 flex flex-col border-b border-slate-100">
+                        <strong id="userName" class="text-sm text-slate-900">Marcos</strong>
+                        <span id="userRole" class="text-xs text-slate-500">Administrador</span>
+                    </div>
+                    <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-500 mt-1"><i class="fa-solid fa-user"></i> Meu Perfil</a>
+                    <a href="login.html" class="flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50"><i class="fa-solid fa-right-from-bracket"></i> Sair</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- O menu de navegação dinâmica será injetado automaticamente aqui pelo seu common.js -->
+   
+    <!-- Área Principal (Modificado: pb-24 impede a sobreposição da Bottom Bar no Mobile) -->
+    <main class="p-6 md:p-10 pb-24 md:pb-10 max-w-7xl mx-auto space-y-8">
+        
+        <!-- Formulário de Cadastro -->
+        <section class="bg-white rounded-xl p-6 md:p-8 border border-slate-200 shadow-sm">
+            <h2 class="text-slate-900 text-xl font-medium pb-4 border-b border-slate-200 mb-6">
+                Cadastro de Pastilhas
+            </h2>
+            
+            <form id="EtqForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Nome da pastilha (Ocupa 2 colunas em telas grandes) -->
+                
+                <!-- Código da pastilha -->
+                <div class="md:col-span-2">
+                    <label for="codigoPastilha" class="block text-sm font-medium text-slate-700 mb-2">
+                        Código da Pastilha
+                    </label>
+
+                    <input
+                        type="text"
+                        id="codigoPastilha"
+                        class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all shadow-sm"
+                        placeholder="Ex: PAST-001"
+                        required
+                    >
+                </div>
+
+                <!-- Descrição da pastilha -->
+                <div class="w-full">
+                    <label for="descricaoPastilha" class="block text-sm font-medium text-slate-700 mb-2">
+                        Descrição da Pastilha
+                    </label>
+
+                    <input
+                        type="text"
+                        id="descricaoPastilha"
+                        class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all shadow-sm"
+                        placeholder="Ex: Pastilha de torneamento"
+                        required
+                    >
+                </div>
+
+                <!-- Estoque inicial -->
+                <div class="w-full">
+                    <label for="estoqueAtual" class="block text-sm font-medium text-slate-700 mb-2">
+                        Estoque Inicial
+                    </label>
+
+                    <input
+                        type="number"
+                        id="estoqueAtual"
+                        min="0"
+                        value="0"
+                        class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all shadow-sm"
+                        placeholder="Ex: 50"
+                        required
+                    >
+                </div>
+
+                <!-- Estoque mínimo -->
+                <div class="w-full">
+                    <label for="estoqueMinimo" class="block text-sm font-medium text-slate-700 mb-2">
+                        Estoque Mínimo
+                    </label>
+
+                    <input
+                        type="number"
+                        id="estoqueMinimo"
+                        min="0"
+                        value="0"
+                        class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all shadow-sm"
+                        placeholder="Ex: 10"
+                        required
+                    >
+                </div>
+
+                <!-- Fornecedor -->
+                <div class="w-full">
+                    <label for="fornecedorId" class="block text-sm font-medium text-slate-700 mb-2">
+                        Fornecedor
+                    </label>
+
+                    <select
+                        id="fornecedorId"
+                        class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none transition-all shadow-sm"
+                        required
+                    >
+                        <option value="">Selecione um fornecedor</option>
+                    </select>
+                </div>
+
+                <!-- Ações do Formulário -->
+                <div class="md:col-span-2 lg:col-span-3 flex flex-col sm:flex-row justify-end items-center gap-4 pt-4 border-t border-slate-100 mt-2">
+                    <button type="button" id="cancelEditBtn" class="w-full sm:w-auto bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium py-3 px-6 rounded-lg transition-colors hidden">
+                        Cancelar edição
+                    </button>
+                    <button type="submit" id="saveEtqBtn" class="w-full sm:w-auto bg-brand-600 hover:bg-brand-700 text-white font-medium py-3 px-6 rounded-lg shadow-sm transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-floppy-disk"></i> Cadastrar Estoque
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Tabela de Estoque -->
+        <section class="bg-white rounded-xl p-6 md:p-8 border border-slate-200 shadow-sm">
+            <h2 class="text-slate-900 text-xl font-medium pb-4 border-b border-slate-200 mb-6">
+                Pastilhas em Estoque
+            </h2>
+            
+            <!-- Wrapper para proteção de conteúdo (Ajustado para lg) -->
+<div class="w-full overflow-x-hidden lg:overflow-x-auto rounded-lg lg:border lg:border-slate-200 lg:shadow-sm">
+    <table class="w-full table-fixed text-left border-collapse block lg:table">
+        <thead class="hidden lg:table-header-group bg-slate-800 text-white">
+        <tr>
+            <th class="w-[7%] p-3 text-sm font-semibold tracking-wide">ID</th>
+
+            <th class="w-[14%] p-3 text-sm font-semibold tracking-wide">Código</th>
+            <th class="w-[23%] p-3 text-sm font-semibold tracking-wide">Descrição</th>
+            <th class="w-[20%] p-3 text-sm font-semibold tracking-wide">Fornecedor</th>
+            <th class="w-[12%] p-3 text-sm font-semibold tracking-wide text-center">Estoque Atual</th>
+            <th class="w-[12%] p-3 text-sm font-semibold tracking-wide text-center">Estoque Mínimo</th>
+            <th class="w-[12%] p-3 text-sm font-semibold tracking-wide text-center">Status</th>
+        </tr>
+    </thead>
+        <tbody id="estqTable" class="block lg:table-row-group lg:divide-y lg:divide-slate-200 bg-transparent lg:bg-white w-full">
+            <tr class="block lg:table-row w-full">
+                <td colspan="9" class="p-6 text-center text-sm text-slate-500 italic border-b-0 block lg:table-cell w-full">
+                    Carregando estoque...
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+        </section>
+    </main>
+
+    <!-- Modal de Histórico -->
+    <div id="historyModalOverlay" class="fixed inset-0 bg-slate-900/60 hidden place-items-center p-4 md:p-6 z-[100] backdrop-blur-sm">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl border border-slate-200 overflow-hidden" role="dialog" aria-modal="true" aria-labelledby="historyModalTitle">
+            <!-- Modal Header -->
+            <div class="flex items-start justify-between p-6 border-b border-slate-200 bg-slate-50">
+                <div>
+                    <h2 id="historyModalTitle" class="text-xl font-semibold text-slate-900">Histórico de Edição</h2>
+                    <p id="historyModalSubtitle" class="text-sm text-slate-500 mt-1"></p>
+                </div>
+                <button type="button" id="closeHistoryModal" aria-label="Fechar" class="text-slate-400 hover:text-slate-700 transition-colors text-3xl leading-none -mt-1">
+                    &times;
+                </button>
+            </div>
+            <!-- Modal Body -->
+            <div id="historyModalContent" class="p-6 max-h-[60vh] overflow-y-auto bg-slate-50/50">
+                <p class="text-slate-500 text-sm text-center py-4">Selecione uma pastilha e clique em Histórico para ver as últimas alterações.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/common.js"></script>
+    <script src="assets/js/Pastilhas.js"></script>
+</body>
+</html>

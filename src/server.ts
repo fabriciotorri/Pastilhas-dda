@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client';
 import fornecedorRoutes from './routes/fornecedorRoutes';
 import pastilhasRoutes from './routes/pastilhasRoutes';
 import movimentacaoRoutes from './routes/movimentacaoRoutes';
+import estoqueRoutes from './routes/estoqueRoutes';
 
 const app = express();
 const prisma = new PrismaClient();
@@ -15,6 +16,7 @@ app.use('/fornecedores', fornecedorRoutes);
 app.use('/pastilhas', pastilhasRoutes);
 app.use('/movimentacoes', movimentacaoRoutes);
 app.use('/movimentacao', movimentacaoRoutes);
+app.use('/estoque', estoqueRoutes);
 
 
 

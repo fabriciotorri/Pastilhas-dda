@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../lib/prisma';
 
 const router = Router();
-const prisma = new PrismaClient();
+
 
 // ==========================================
 // REGISTRAR ENTRADA OU SAÍDA
@@ -87,7 +87,7 @@ router.post('/', async (req, res) => {
 // ==========================================
 router.get('/', async (req, res) => {
   try {
-    const { tipo, pastilhaId, dataInicio, dataFim } = req.query;
+    const { tipo, pastilhaId, fornecedorId, dataInicio, dataFim } = req.query;
 
     // Validar tipo
     if (tipo && tipo !== 'ENTRADA' && tipo !== 'SAIDA') {
@@ -104,6 +104,21 @@ router.get('/', async (req, res) => {
       if (!Number.isInteger(pastilhaIdNumber) || pastilhaIdNumber <= 0) {
         return res.status(400).json({
           error: 'pastilhaId deve ser um número inteiro maior que zero.',
+        });
+      }
+    }
+
+    let fornecedorIdNumber: number | undefined;
+
+    if (fornecedorId) {
+      fornecedorIdNumber = Number(fornecedorId);
+
+      if (
+        !Number.isInteger(fornecedorIdNumber) ||
+        fornecedorIdNumber <= 0
+      ) {
+        return res.status(400).json({
+          error: 'fornecedorId deve ser um número inteiro maior que zero.',
         });
       }
     }
@@ -141,6 +156,7 @@ router.get('/', async (req, res) => {
       where: {
         ...(tipo ? { tipo: tipo as string } : {}),
         ...(pastilhaIdNumber ? { pastilhaId: pastilhaIdNumber } : {}),
+        ...(fornecedorIdNumber ? { pastilha : { fornecedorId: fornecedorIdNumber , } , } : {}),
         ...(dataInicioDate || dataFimDate
           ? {
               data: {
@@ -151,7 +167,11 @@ router.get('/', async (req, res) => {
           : {}),
       },
       include: {
-        pastilha: true,
+        pastilha: {
+          include: {
+            fornecedor: true,
+          },
+        },
       },
       orderBy: {
         data: 'desc',

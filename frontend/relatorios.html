@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Relatórios - Pastilhas DDA</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-100 min-h-screen">
+
+    <header class="bg-white border-b border-slate-200">
+
+        <div class="px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+
+            <div class="flex items-center gap-4">
+
+                <span class="text-brand-500 font-semibold text-xl">
+                    Pastilhas DDA
+                </span>
+
+                <span class="text-slate-800 font-medium text-lg hidden sm:block">
+                    Sistema de Controle de Estoque
+                </span>
+
+            </div>
+
+            <div class="flex items-center gap-6">
+
+                <span class="text-slate-600">
+                    Usuário
+                </span>
+
+            </div>
+
+        </div>
+
+        <nav class="border-t border-slate-100 px-6 py-3"></nav>
+
+    </header>
+
+
+    <main class="p-6 max-w-7xl mx-auto">
+
+        <div class="mb-6">
+
+            <h1 class="text-2xl font-bold text-slate-800">
+                Relatórios
+            </h1>
+
+            <p class="text-slate-500 mt-1">
+                Consulte as movimentações e o histórico do estoque.
+            </p>
+
+        </div>
+
+
+        <!-- FILTROS -->
+
+        <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+
+            <h2 class="text-lg font-semibold text-slate-800 mb-6">
+                Filtros
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Fornecedor
+
+                    </label>
+                    <select id="filtroFornecedor" class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">Todos os fornecedores</option>
+                    </select>
+                </div>
+
+                <div>
+
+                    <label
+                        for="filtroPastilha"
+                        class="block text-sm font-medium text-slate-700 mb-2"
+                    >
+                        Pastilha
+                    </label>
+
+                    <select
+                        id="filtroPastilha"
+                        class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+
+                        <option value="">
+                            Todas as pastilhas
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div>
+
+                    <label
+                        for="filtroTipo"
+                        class="block text-sm font-medium text-slate-700 mb-2"
+                    >
+                        Tipo de movimentação
+                    </label>
+
+                    <select
+                        id="filtroTipo"
+                        class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+
+                        <option value="">
+                            Todos
+                        </option>
+
+                        <option value="ENTRADA">
+                            Entrada
+                        </option>
+
+                        <option value="SAIDA">
+                            Saída
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div>
+
+                    <label
+                        for="dataInicio"
+                        class="block text-sm font-medium text-slate-700 mb-2"
+                    >
+                        Data inicial
+                    </label>
+
+                    <input
+                        type="date"
+                        id="dataInicio"
+                        class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label
+                        for="dataFim"
+                        class="block text-sm font-medium text-slate-700 mb-2"
+                    >
+                        Data final
+                    </label>
+
+                    <input
+                        type="date"
+                        id="dataFim"
+                        class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="mt-6 flex justify-end gap-3">
+
+                <button
+                    id="limparFiltros"
+                    type="button"
+                    class="border border-slate-300 text-slate-700 px-6 py-2.5 rounded-lg hover:bg-slate-50 transition"
+                >
+                    Limpar
+                </button>
+
+                <button
+                    id="gerarRelatorio"
+                    type="button"
+                    class="bg-slate-800 text-white px-6 py-2.5 rounded-lg hover:bg-slate-700 transition"
+                >
+                    Gerar relatório
+                </button>
+
+                <button
+                    id="exportarExcel"
+                    type="button"
+                    class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
+                >
+                    Exportar Excel
+                </button>
+
+                <button
+                    id="exportarPdf"
+                    type="button"
+                    class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
+                >
+                    Exportar PDF
+                </button>   
+
+            </div>
+
+        </section>
+
+
+        <!-- RESULTADO -->
+
+        <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mt-6">
+
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+
+                <div>
+
+                    <h2 class="text-lg font-semibold text-slate-800">
+                        Resultado
+                    </h2>
+
+                    <p
+                        id="resumoRelatorio"
+                        class="text-sm text-slate-500 mt-1"
+                    >
+                        Nenhum relatório gerado.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="overflow-x-auto">
+
+                <table class="w-full text-left border-collapse">
+
+                    <thead class="bg-slate-800 text-white">
+
+                        <tr>
+
+                            <th class="p-3 text-sm font-semibold">
+                                ID
+                            </th>
+
+                            <th class="p-3 text-sm font-semibold">
+                                Data
+                            </th>
+
+                            <th class="p-3 text-sm font-semibold">
+                                Pastilha
+                            </th>
+
+                            <th class="p-3 text-sm font-semibold">
+                                Fornecedor
+                            </th>
+
+                            <th class="p-3 text-sm font-semibold">
+                                Tipo
+                            </th>
+
+                            <th class="p-3 text-sm font-semibold text-center">
+                                Quantidade
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="relatorioTable">
+
+                        <tr>
+
+                            <td
+                                colspan="6"
+                                class="p-6 text-center text-slate-500"
+                            >
+                                Nenhum dado para exibir.
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/common.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    
+    <script src="assets/js/relatorios.js"></script>
+
+</body>
+
+</html>
