@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
+import path from 'path';
 import { PrismaClient } from '@prisma/client';
 import fornecedorRoutes from './routes/fornecedorRoutes';
 import pastilhasRoutes from './routes/pastilhasRoutes';
@@ -11,6 +12,11 @@ const prisma = new PrismaClient();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(process.cwd(), 'frontend')));
+
+app.get('/', (_req, res) => {
+  res.sendFile(path.join(process.cwd(), 'frontend', 'dashboard.html'));
+});
 
 app.use('/fornecedores', fornecedorRoutes);
 app.use('/pastilhas', pastilhasRoutes);
