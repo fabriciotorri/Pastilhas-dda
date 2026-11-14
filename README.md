@@ -80,6 +80,8 @@ Para executar os testes, utilize o comando:
 ```bash
 npm test
 
+---
+
 👥 Equipe
 Daniel da Cruz Santos Paraná
 
