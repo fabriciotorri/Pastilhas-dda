@@ -1,14 +1,12 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import cors from 'cors';
 import path from 'path';
-import { PrismaClient } from '@prisma/client';
 import fornecedorRoutes from './routes/fornecedorRoutes';
 import pastilhasRoutes from './routes/pastilhasRoutes';
 import movimentacaoRoutes from './routes/movimentacaoRoutes';
 import estoqueRoutes from './routes/estoqueRoutes';
 
 const app = express();
-const prisma = new PrismaClient();
 
 app.use(cors());
 app.use(express.json());
@@ -24,16 +22,13 @@ app.use('/movimentacoes', movimentacaoRoutes);
 app.use('/movimentacao', movimentacaoRoutes);
 app.use('/estoque', estoqueRoutes);
 
+// ✅ Exporta o app para os testes
+export default app;
 
-
-// ==========================================
-// INICIALIZAÇÃO DO SERVIDOR
-// ==========================================
-
-const PORT = process.env.PORT || 3333;
-
-app.listen(PORT, () => {
-  console.log(
-    `[DDA Metalúrgica API] Servidor rodando na porta ${PORT}`,
-  );
-});
+// ✅ Só sobe o servidor quando NÃO estiver rodando testes
+if (process.env.NODE_ENV !== 'test') {
+  const PORT = process.env.PORT || 3333;
+  app.listen(PORT, () => {
+    console.log(`[DDA Metalúrgica API] Servidor rodando na porta ${PORT}`);
+  });
+}
