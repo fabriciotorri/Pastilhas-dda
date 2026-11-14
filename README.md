@@ -79,10 +79,10 @@ A funcionalidade de **Saída de Estoque** possui cobertura de testes unitários 
 Para executar os testes, utilize o comando:
 ```bash
 npm test
-```bash
 
 
-👥 Equipe
+
+## 👥 Equipe
 Daniel da Cruz Santos Paraná
 
 Débora Eduarda Schol
