@@ -20,10 +20,11 @@ function injectHeader() {
     .map((link) => {
       const isActive = currentPage.toLowerCase() === link.href.toLowerCase();
       const classes = isActive
-        ? 'text-brand-500 font-semibold border-b-2 border-brand-500 pb-1 transition-colors'
-        : 'text-slate-600 hover:text-brand-500 font-medium pb-1 transition-colors';
+        ? 'text-[#0d54b4] font-semibold border-b-2 border-[#0d54b4] pb-1 transition-colors'
+        : 'text-slate-600 hover:text-[#0d54b4] font-medium pb-1 transition-colors';
+      const ariaCurrent = isActive ? ' aria-current="page"' : '';
 
-      return `<a href="${link.href}" class="${classes}">${link.label}</a>`;
+      return `<a href="${link.href}" class="${classes}"${ariaCurrent}>${link.label}</a>`;
     })
     .join('');
 
@@ -31,7 +32,11 @@ function injectHeader() {
   header.innerHTML = `
     <div class="px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
       <div class="flex items-center gap-4">
-        <a href="dashboard.html" class="text-brand-500 font-semibold text-xl hover:text-brand-600 transition-colors">
+        <a
+          href="dashboard.html"
+          style="color: #0d54b4;"
+          class="text-[#0d54b4] font-semibold text-xl hover:text-[#0056c6] transition-colors"
+        >
           Pastilha Fácil
         </a>
         <span class="text-slate-800 font-medium text-base lg:text-lg hidden sm:block">
@@ -45,8 +50,10 @@ function injectHeader() {
             type="button"
             aria-label="Configurações"
             aria-haspopup="true"
+            aria-expanded="false"
             id="settingsBtn"
-            class="text-brand-500 text-xl hover:text-brand-600 transition-colors"
+            style="color: #0d54b4;"
+            class="text-[#0d54b4] text-xl hover:text-[#0056c6] transition-colors"
           >
             <i class="fa-solid fa-gear"></i>
           </button>
@@ -55,13 +62,13 @@ function injectHeader() {
             id="settingsDropdown"
             class="hidden absolute top-10 right-0 bg-white min-w-[200px] shadow-lg border border-slate-200 rounded-md z-50 py-2"
           >
-            <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-500">
+            <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d54b4]">
               <i class="fa-solid fa-sliders"></i> Preferências
             </a>
-            <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-500">
+            <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d54b4]">
               <i class="fa-solid fa-lock"></i> Segurança
             </a>
-            <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-500">
+            <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d54b4]">
               <i class="fa-solid fa-database"></i> Backup de Dados
             </a>
           </div>
@@ -72,8 +79,10 @@ function injectHeader() {
             type="button"
             aria-label="Perfil do Usuário"
             aria-haspopup="true"
+            aria-expanded="false"
             id="profileBtn"
-            class="w-10 h-10 rounded-full bg-brand-500 text-white font-semibold flex items-center justify-center hover:bg-brand-600 transition-colors"
+            style="background-color: #0d54b4;"
+            class="w-10 h-10 rounded-full bg-[#0d54b4] text-white font-semibold flex items-center justify-center hover:bg-[#0056c6] transition-colors"
           >
             U
           </button>
@@ -87,7 +96,7 @@ function injectHeader() {
               <span id="userRole" class="text-xs text-slate-500">Administrador</span>
             </div>
 
-            <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-500 mt-1">
+            <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d54b4] mt-1">
               <i class="fa-solid fa-user"></i> Meu Perfil
             </a>
 
@@ -103,10 +112,25 @@ function injectHeader() {
       </div>
     </div>
 
-    <nav class="border-t border-slate-100 px-6 py-3 flex flex-wrap justify-around items-center gap-4">
+    <nav aria-label="Navegação principal" class="border-t border-slate-100 px-6 py-3 flex flex-wrap justify-around items-center gap-4">
       ${navItemsHtml}
     </nav>
   `;
+}
+
+// ==========================================
+// RODAPÉ PADRONIZADO
+// ==========================================
+
+function injectFooter() {
+  if (document.querySelector('footer')) return;
+
+  const footer = document.createElement('footer');
+  footer.className = 'mt-12 border-t border-slate-200 bg-white py-4 px-6 text-center text-xs text-slate-500';
+  footer.innerHTML = `
+    <p>&copy; ${new Date().getFullYear()} <span style="color: #0d54b4;" class="font-semibold">Pastilha Fácil</span> &mdash; Sistema de Controle de Estoque de Pastilhas.</p>
+  `;
+  document.body.appendChild(footer);
 }
 
 // ==========================================
@@ -136,25 +160,40 @@ function setupDropdowns() {
   const profileBtn = document.getElementById('profileBtn');
   const profileDropdown = document.getElementById('profileDropdown');
 
+  const closeAll = () => {
+    if (settingsDropdown) settingsDropdown.classList.add('hidden');
+    if (profileDropdown) profileDropdown.classList.add('hidden');
+    if (settingsBtn) settingsBtn.setAttribute('aria-expanded', 'false');
+    if (profileBtn) profileBtn.setAttribute('aria-expanded', 'false');
+  };
+
   if (settingsBtn && settingsDropdown) {
     settingsBtn.addEventListener('click', (event) => {
       event.stopPropagation();
-      settingsDropdown.classList.toggle('hidden');
-      if (profileDropdown) profileDropdown.classList.add('hidden');
+      const willOpen = settingsDropdown.classList.contains('hidden');
+      closeAll();
+      if (willOpen) {
+        settingsDropdown.classList.remove('hidden');
+        settingsBtn.setAttribute('aria-expanded', 'true');
+      }
     });
   }
 
   if (profileBtn && profileDropdown) {
     profileBtn.addEventListener('click', (event) => {
       event.stopPropagation();
-      profileDropdown.classList.toggle('hidden');
-      if (settingsDropdown) settingsDropdown.classList.add('hidden');
+      const willOpen = profileDropdown.classList.contains('hidden');
+      closeAll();
+      if (willOpen) {
+        profileDropdown.classList.remove('hidden');
+        profileBtn.setAttribute('aria-expanded', 'true');
+      }
     });
   }
 
-  document.addEventListener('click', () => {
-    if (settingsDropdown) settingsDropdown.classList.add('hidden');
-    if (profileDropdown) profileDropdown.classList.add('hidden');
+  document.addEventListener('click', closeAll);
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeAll();
   });
 }
 
@@ -180,6 +219,7 @@ function setupLogout() {
 
 document.addEventListener('DOMContentLoaded', () => {
   injectHeader();
+  injectFooter();
   initializeHeader();
   setupDropdowns();
   setupLogout();
