@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- TailwindCSS via CDN (Para desenvolvimento) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -23,6 +23,7 @@
                         brand: {
                             500: '#0d54b4',
                             600: '#0056c6',
+                            700: '#00449e',
                         }
                     }
                 }
@@ -32,27 +33,20 @@
 </head>
 <body class="bg-slate-50 text-slate-900 min-h-screen font-sans antialiased relative">
 
-    <!-- Cabeçalho (Padronizado) -->
-    <header class="bg-white border-b border-slate-200">
+    <!-- Cabeçalho (Injetado pelo common.js) -->
+    <header class="bg-white border-b border-slate-200"></header>
 
-
-    </header>
-
-    <!-- O menu de navegação dinâmica será injetado automaticamente aqui pelo seu common.js -->
-   
-    <!-- Área Principal (Modificado: pb-24 impede a sobreposição da Bottom Bar no Mobile) -->
+    <!-- Área Principal -->
     <main class="p-6 md:p-10 pb-24 md:pb-10 max-w-7xl mx-auto space-y-8">
-        
+
         <!-- Formulário de Cadastro -->
         <section class="bg-white rounded-xl p-6 md:p-8 border border-slate-200 shadow-sm">
             <h2 class="text-slate-900 text-xl font-medium pb-4 border-b border-slate-200 mb-6">
                 Cadastro de Pastilhas
             </h2>
-            
+
             <form id="EtqForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                
-                <!-- Nome da pastilha (Ocupa 2 colunas em telas grandes) -->
-                
+
                 <!-- Código da pastilha -->
                 <div class="md:col-span-2">
                     <label for="codigoPastilha" class="block text-sm font-medium text-slate-700 mb-2">
@@ -149,38 +143,35 @@
             <h2 class="text-slate-900 text-xl font-medium pb-4 border-b border-slate-200 mb-6">
                 Pastilhas em Estoque
             </h2>
-            
-            <!-- Wrapper para proteção de conteúdo (Ajustado para lg) -->
-<div class="w-full overflow-x-hidden lg:overflow-x-auto rounded-lg lg:border lg:border-slate-200 lg:shadow-sm">
-    <table class="w-full table-fixed text-left border-collapse block lg:table">
-        <thead class="hidden lg:table-header-group bg-slate-800 text-white">
-        <tr>
-            <th class="w-[7%] p-3 text-sm font-semibold tracking-wide">ID</th>
 
-            <th class="w-[14%] p-3 text-sm font-semibold tracking-wide">Código</th>
-            <th class="w-[23%] p-3 text-sm font-semibold tracking-wide">Descrição</th>
-            <th class="w-[20%] p-3 text-sm font-semibold tracking-wide">Fornecedor</th>
-            <th class="w-[12%] p-3 text-sm font-semibold tracking-wide text-center">Estoque Atual</th>
-            <th class="w-[12%] p-3 text-sm font-semibold tracking-wide text-center">Estoque Mínimo</th>
-            <th class="w-[12%] p-3 text-sm font-semibold tracking-wide text-center">Status</th>
-        </tr>
-    </thead>
-        <tbody id="estqTable" class="block lg:table-row-group lg:divide-y lg:divide-slate-200 bg-transparent lg:bg-white w-full">
-            <tr class="block lg:table-row w-full">
-                <td colspan="9" class="p-6 text-center text-sm text-slate-500 italic border-b-0 block lg:table-cell w-full">
-                    Carregando estoque...
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+            <div class="w-full overflow-x-hidden lg:overflow-x-auto rounded-lg lg:border lg:border-slate-200 lg:shadow-sm">
+                <table class="w-full table-fixed text-left border-collapse block lg:table">
+                    <thead class="hidden lg:table-header-group bg-slate-800 text-white">
+                        <tr>
+                            <th class="w-[7%] p-3 text-sm font-semibold tracking-wide">ID</th>
+                            <th class="w-[14%] p-3 text-sm font-semibold tracking-wide">Código</th>
+                            <th class="w-[23%] p-3 text-sm font-semibold tracking-wide">Descrição</th>
+                            <th class="w-[20%] p-3 text-sm font-semibold tracking-wide">Fornecedor</th>
+                            <th class="w-[12%] p-3 text-sm font-semibold tracking-wide text-center">Estoque Atual</th>
+                            <th class="w-[12%] p-3 text-sm font-semibold tracking-wide text-center">Estoque Mínimo</th>
+                            <th class="w-[12%] p-3 text-sm font-semibold tracking-wide text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="estqTable" class="block lg:table-row-group lg:divide-y lg:divide-slate-200 bg-transparent lg:bg-white w-full">
+                        <tr class="block lg:table-row w-full">
+                            <td colspan="7" class="p-6 text-center text-sm text-slate-500 italic border-b-0 block lg:table-cell w-full">
+                                Carregando estoque...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
     </main>
 
     <!-- Modal de Histórico -->
     <div id="historyModalOverlay" class="fixed inset-0 bg-slate-900/60 hidden place-items-center p-4 md:p-6 z-[100] backdrop-blur-sm">
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl border border-slate-200 overflow-hidden" role="dialog" aria-modal="true" aria-labelledby="historyModalTitle">
-            <!-- Modal Header -->
             <div class="flex items-start justify-between p-6 border-b border-slate-200 bg-slate-50">
                 <div>
                     <h2 id="historyModalTitle" class="text-xl font-semibold text-slate-900">Histórico de Edição</h2>
@@ -190,7 +181,6 @@
                     &times;
                 </button>
             </div>
-            <!-- Modal Body -->
             <div id="historyModalContent" class="p-6 max-h-[60vh] overflow-y-auto bg-slate-50/50">
                 <p class="text-slate-500 text-sm text-center py-4">Selecione uma pastilha e clique em Histórico para ver as últimas alterações.</p>
             </div>
