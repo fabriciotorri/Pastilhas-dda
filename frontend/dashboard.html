@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Pastilha Fácil</title>
+
     <!-- Fontes e Ícones -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- TailwindCSS via CDN (Para desenvolvimento. Em produção, use o processo de build) -->
+
+    <!-- TailwindCSS via CDN (Para desenvolvimento) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -20,6 +22,7 @@
                         brand: {
                             500: '#0d54b4',
                             600: '#0056c6',
+                            700: '#00449e',
                         }
                     }
                 }
@@ -29,23 +32,16 @@
 </head>
 <body class="bg-slate-50 text-slate-900 min-h-screen font-sans antialiased">
 
-    <!-- Cabeçalho -->
-        <header class="bg-white border-b border-slate-200">
-
-    </header>
-
-    <!-- Navegação Secundária -->
-    <!-- Navegação Principal (Bottom Bar no Mobile, Top Bar no Desktop) -->
-    
+    <!-- Cabeçalho (Injetado pelo common.js) -->
+    <header class="bg-white border-b border-slate-200"></header>
 
     <!-- Área Principal -->
     <main class="p-6 md:p-10 pb-24 md:pb-10 max-w-7xl mx-auto space-y-8">
-         
-        <!-- Indicadores (KPIs) -->
+
         <!-- Indicadores (KPIs) -->
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
 
-        <!-- 1. Total de pastilhas -->
+            <!-- 1. Total de pastilhas -->
             <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
                 <h2 class="text-slate-800 text-sm font-medium mb-3">
                     📦 Total de Pastilhas
@@ -77,10 +73,10 @@
                 <span class="text-slate-900 text-4xl font-bold" id="amarelo">-</span>
             </div>
 
-        </section> 
+        </section>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
+
             <!-- Coluna Principal (Maior) -->
             <div class="lg:col-span-2 space-y-8">
                 <!-- Seção Estoque -->
@@ -89,7 +85,6 @@
                         Estoque de Pastilhas
                     </h2>
                     <div id="listaEtq" class="min-h-[200px] flex flex-col gap-3">
-                        <!-- O JS injetará os itens aqui. -->
                         <p class="text-slate-500 text-sm italic">Carregando dados do estoque...</p>
                     </div>
                 </section>
@@ -97,7 +92,7 @@
 
             <!-- Coluna Lateral (Menor) -->
             <div class="space-y-8">
-                <!-- Seção Alertas -->
+                <!-- Seção Alertas / Movimentações -->
                 <section class="bg-white rounded-lg p-6 border border-slate-200 shadow-sm">
                     <h2 class="text-slate-900 text-lg font-medium pb-4 border-b border-slate-200 mb-4 flex items-center gap-2">
                         <span class="text-red-500">⚠</span> Movimentações Recentes
@@ -114,9 +109,9 @@
                         <button id="btnEntrega" class="w-full flex items-center justify-center gap-2 bg-brand-500 hover:bg-brand-600 text-white font-medium py-3 px-4 rounded-md transition-colors">
                             <i class="fa-solid fa-plus"></i> Registrar Entrega
                         </button>
-                        <button class="w-full flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium py-3 px-4 rounded-md transition-colors">
+                        <a href="pastilhas.html" class="w-full flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium py-3 px-4 rounded-md transition-colors">
                             <i class="fa-solid fa-plus"></i> Cadastrar Pastilha
-                        </button>
+                        </a>
                         <button id="btnRelatorio" class="w-full flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium py-3 px-4 rounded-md transition-colors">
                             Ver Relatórios
                         </button>
@@ -129,21 +124,18 @@
 
     <!-- Modal Overlay -->
     <div id="modalOverlay" class="fixed inset-0 bg-slate-900/60 hidden place-items-center p-4 md:p-6 z-[100] backdrop-blur-sm">
-        <!-- Modal Card -->
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl border border-slate-200 overflow-hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-            <!-- Modal Header -->
             <div class="flex items-center justify-between p-6 border-b border-slate-200 bg-slate-50">
                 <h2 id="modalTitle" class="text-xl font-semibold text-slate-900">Título</h2>
                 <button id="closeModal" aria-label="Fechar" class="text-slate-400 hover:text-slate-700 transition-colors text-2xl leading-none">
                     &times;
                 </button>
             </div>
-            <!-- Modal Body -->
             <div id="modalBody" class="p-6 max-h-[70vh] overflow-y-auto">
                 <!-- Conteúdo injetado via JS -->
             </div>
         </div>
-    </div> 
+    </div>
 
     <!-- Scripts -->
     <script src="assets/js/api.js"></script>
