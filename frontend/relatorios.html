@@ -2,43 +2,41 @@
 <html lang="pt-BR">
 
 <head>
+    <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios - Pastilha Fácil</title>
 
-    <title>Relatórios - Pastilhas DDA</title>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            500: '#0d54b4',
+                            600: '#0056c6',
+                            700: '#00449e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
 </head>
 
 <body class="bg-slate-100 min-h-screen">
 
     <header class="bg-white border-b border-slate-200">
 
-        <div class="px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
-
-            <div class="flex items-center gap-4">
-
-                <span class="text-brand-500 font-semibold text-xl">
-                    Pastilhas DDA
-                </span>
-
-                <span class="text-slate-800 font-medium text-lg hidden sm:block">
-                    Sistema de Controle de Estoque
-                </span>
-
-            </div>
-
-            <div class="flex items-center gap-6">
-
-                <span class="text-slate-600">
-                    Usuário
-                </span>
-
-            </div>
-
-        </div>
-
-        <nav class="border-t border-slate-100 px-6 py-3"></nav>
 
     </header>
 
