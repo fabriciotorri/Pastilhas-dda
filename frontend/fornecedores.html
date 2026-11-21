@@ -2,15 +2,14 @@
 <html lang="pt-BR">
 
 <head>
-    <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fornecedores- Pastilha Fácil</title>
+    <title>Fornecedores - Pastilha Fácil</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -31,52 +30,37 @@
         }
     </script>
 </head>
-</head>
 
-<body class="bg-slate-100 min-h-screen">
+<body class="bg-slate-50 text-slate-900 min-h-screen font-sans antialiased">
 
-    <header class="bg-white border-b border-slate-200">
-
-       
-
-    </header>
-
+    <header class="bg-white border-b border-slate-200"></header>
 
     <main class="p-6 max-w-7xl mx-auto">
 
         <div class="mb-6">
-
             <h1 class="text-2xl font-bold text-slate-800">
                 Fornecedores
             </h1>
-
             <p class="text-slate-500 mt-1">
                 Cadastre e consulte os fornecedores de pastilhas.
             </p>
-
         </div>
 
-
         <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-
             <h2 class="text-lg font-semibold text-slate-800 mb-6">
                 Cadastrar fornecedor
             </h2>
 
-
             <form id="fornecedorForm">
-
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                     <div>
-
                         <label
                             for="nomeFornecedor"
                             class="block text-sm font-medium text-slate-700 mb-2"
                         >
                             Nome do fornecedor
                         </label>
-
                         <input
                             type="text"
                             id="nomeFornecedor"
@@ -84,101 +68,65 @@
                             placeholder="Ex: Sandvik Coromant"
                             class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         >
-
                     </div>
 
-
                     <div>
-
                         <label
                             for="cnpjFornecedor"
                             class="block text-sm font-medium text-slate-700 mb-2"
                         >
                             CNPJ
                         </label>
-
                         <input
                             type="text"
                             id="cnpjFornecedor"
+                            maxlength="18"
                             required
-                            placeholder="Ex: 12345678000199"
+                            placeholder="Ex: 12.345.678/0001-99"
                             class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         >
-
                     </div>
 
                 </div>
 
-
                 <div class="mt-6 flex justify-end">
-
                     <button
                         type="submit"
                         class="bg-slate-800 text-white px-6 py-2.5 rounded-lg hover:bg-slate-700 transition"
                     >
                         Cadastrar fornecedor
                     </button>
-
                 </div>
-
             </form>
-
         </section>
 
-
         <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mt-6">
-
             <h2 class="text-lg font-semibold text-slate-800 mb-6">
                 Fornecedores cadastrados
             </h2>
 
             <div class="overflow-x-auto">
-
                 <table class="w-full text-left border-collapse">
-
                     <thead class="bg-slate-800 text-white">
-
                         <tr>
-
-                            <th class="p-3 text-sm font-semibold">
-                                ID
-                            </th>
-
-                            <th class="p-3 text-sm font-semibold">
-                                Nome
-                            </th>
-
-                            <th class="p-3 text-sm font-semibold">
-                                CNPJ
-                            </th>
-
+                            <th class="p-3 text-sm font-semibold">ID</th>
+                            <th class="p-3 text-sm font-semibold">Nome</th>
+                            <th class="p-3 text-sm font-semibold">CNPJ</th>
                         </tr>
-
                     </thead>
 
                     <tbody id="fornecedoresTable">
-
                         <tr>
-
-                            <td
-                                colspan="3"
-                                class="p-6 text-center text-slate-500"
-                            >
+                            <td colspan="3" class="p-6 text-center text-slate-500">
                                 Carregando fornecedores...
                             </td>
-
                         </tr>
-
                     </tbody>
-
                 </table>
-
             </div>
-
         </section>
 
     </main>
-
 
     <script src="assets/js/api.js"></script>
     <script src="assets/js/common.js"></script>
